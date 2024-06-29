@@ -1,0 +1,56 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+public class CricketAnalytics {
+    public static void main(String[] args) {
+        // Sample list of cricket players and their batting styles
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("Virat Kohli", BattingStyle.RIGHT_HAND, true));
+        players.add(new Player("Rohit Sharma", BattingStyle.RIGHT_HAND, true));
+        players.add(new Player("Shivam Dube", BattingStyle.LEFT_HAND, false));
+        players.add(new Player("Yuvraj Singh", BattingStyle.LEFT_HAND, true));
+
+        // Defining a predicate to filter batsmen who can play the pull shot
+        Predicate<Player> canPlayPullShot = player ->
+                player.getBattingStyle() == BattingStyle.RIGHT_HAND && player.isCanPlayPullShot();
+
+        // Use streams to filter and collect players according to the predicate
+        List<Player> pullShotBatsmen = players.stream()
+                .filter(canPlayPullShot)
+                .collect(Collectors.toList());
+
+        // Print the names of batsmen who can play the pull shot
+        System.out.println("Batsmen who can play the pull shot:");
+        pullShotBatsmen.forEach(player -> System.out.println(player.getName()));
+    }
+}
+
+class Player {
+    private String name;
+    private BattingStyle battingStyle;
+    private boolean canPlayPullShot;
+
+    public Player(String name, BattingStyle battingStyle, boolean canPlayPullShot) {
+        this.name = name;
+        this.battingStyle = battingStyle;
+        this.canPlayPullShot = canPlayPullShot;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BattingStyle getBattingStyle() {
+        return battingStyle;
+    }
+
+    public boolean isCanPlayPullShot() {
+        return canPlayPullShot;
+    }
+}
+
+enum BattingStyle {
+    RIGHT_HAND, LEFT_HAND
+}
